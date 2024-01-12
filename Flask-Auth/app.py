@@ -141,6 +141,25 @@ def callback():
 
     return redirect("/restricted_content1")
 
+@app.route("/delete_user", methods = ["POST"])
+def delete_user():
+    if 'username' in session and session['admin'] == 1:
+        username = request.form.get('username')
+        dao.delete_user(username)
+        return redirect(url_for('restricted_content3'))
+    else:
+        return redirect(url_for('login'))
+    
+@app.route("/escalate_user", methods = ["POST"])
+def escalate_user():
+    if 'username' in session and session['admin'] == 1:
+        username = request.form.get('username')
+        dao.escalate_user(username)
+        return redirect(url_for('restricted_content3'))
+    else:
+        return redirect(url_for('login'))
+    
+
 @app.route("/jwt_token", methods = ["POST"])
 def hello():
     username = request.json.get("username", None)
